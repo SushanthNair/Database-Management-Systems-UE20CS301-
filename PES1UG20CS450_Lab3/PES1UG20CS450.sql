@@ -1,0 +1,17 @@
+create table TRAIN(Train_no varchar(10) not null,Name varchar(100) not null,Arrival varchar(100) not null,Destination varchar(100) not null,Availability varchar(10),PRIMARY KEY(Train_no));
+create table COMPARTMENT(Type varchar(10),Compartment_no integer not null,Capacity integer,Availability varchar(10) not null,Train_no varchar(10),PRIMARY KEY(Compartment_no),FOREIGN KEY(Train_no) REFERENCES TRAIN(Train_no));
+create table ROUTE_INFO(From_Station_No varchar(100),From_Station_Name varchar(100),To_Station_No varchar(100),To_Station_Name varchar(100),Distance int(3),Train_no varchar(10),PRIMARY KEY(From_Station_No,To_Station_No),FOREIGN KEY(Train_no) REFERENCES TRAIN(Train_no));
+create table USER(UserID varchar(100) not null,user_type varchar(100), fname varchar(100), lname varchar(100), age integer, DOB varchar(8), PRIMARY KEY(User_ID));
+create table USER_TRAIN(Train_no varchar(10),UserID varchar(100),Date_time_stamp varchar(100) not null,PRIMARY KEY(Date_time_stamp),FOREIGN KEY(Train_no) REFERENCES TRAIN(Train_no),FOREIGN KEY(UserID) REFERENCES USER(UserID));
+create table USER_PHONE(UserID varchar(100),Phone_no varchar(100) not null, PRIMARY KEY(Phone_no),FOREIGN KEY(UserID) REFERENCES USER(UserID));
+create table TICKET(PNR varchar(100),Train_no varchar(20),Travel_date varchar(20),departure varchar(20),arrival varchar(20),departure_time varchar(20),arrival_time varchar(20),UserID varchar(100),train_type varchar(20),compartment_type varchar(100),cmpt_no varchar(20),PRIMARY KEY(PNR),FOREIGN KEY(UserID) REFERENCES USER(UserID));
+create table ticket_passenger(Seat_no varchar(20),Name char(20),Age integer,PNR varchar(100),PRIMARY KEY(Seat_no),FOREIGN KEY(PNR) REFERENCES TICKET(PNR));
+create table payment_info(transaction_id varchar(20),bank varchar(20),card_number varchar(20), price integer, PNR varchar(100),PRIMARY KEY(transaction_id), FOREIGN KEY(PNR) REFERENCES ticket(PNR));
+create table fare_table(Train_type varchar(20),compartment_type varchar(20),fareperkm integer, PRIMARY KEY(Train_type, compartment_type));
+alter table TRAIN add Train_type varchar(100) not null AFTER Availability;
+ALTER table TRAIN ALTER Availability set default "YES";
+ALTER table TRAIN ADD CONSTRAINT Name unique(Name);
+ALTER TABLE TICKET rename TICKET_DETAILS;
+ALTER TABLE USER add constraint CHK_AGE CHECK(Age >=5);
+truncate table user_train;
+drop table user_train;
